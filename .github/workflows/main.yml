@@ -26,8 +26,8 @@ env:
 # EDIT DEFAULT_COMMAND AND DEFAULT_RETRY_COMMAND IF YOU WANT ~
 # BUT DON'T REMOVE --SESSION IN DEFAULT_COMMAND AND DEFAULT_RETRY_COMMAND !!!
 
-  DEFAULT_COMMAND: timeout 3000 python ms_rewards_farmer.py --session --virtual-display --dont-check-for-updates --repeat-shopping --superfast --skip-unusual --error --no-images --on-finish exit --telegram 5699057111:AAExY_s56alollnAEgwy910lJ7E9qhXhwW8 891294506
-  DEFAULT_RETRY_COMMAND: timeout 3000 python ms_rewards_farmer.py --session --virtual-display --dont-check-for-updates --repeat-shopping --superfast --skip-unusual --error --no-images --on-finish exit --telegram 5699057111:AAExY_s56alollnAEgwy910lJ7E9qhXhwW8 891294506
+  DEFAULT_COMMAND: python ms_rewards_farmer.py --session --virtual-display --dont-check-for-updates --dont-check-internet --superfast --skip-unusual --error --no-images --on-finish exit --telegram 5699057111:AAExY_s56alollnAEgwy910lJ7E9qhXhwW8 891294506
+  DEFAULT_RETRY_COMMAND: python ms_rewards_farmer.py --session --virtual-display --dont-check-for-updates --dont-check-internet --superfast --skip-unusual --error --no-images --on-finish exit --telegram 5699057111:AAExY_s56alollnAEgwy910lJ7E9qhXhwW8 891294506
   HAS_SESSION: 1
 
 # DON'T TOUCH THIS
@@ -42,7 +42,7 @@ jobs:
   Run_Bot:
 
     runs-on: ubuntu-latest
-    timeout-minutes: 70 # HASTAG THIS LINE IF YOU DON'T WANT TO LIMIT THE WORKFLOWS RUN TIME
+    timeout-minutes: 340 # HASTAG THIS LINE IF YOU DON'T WANT TO LIMIT THE WORKFLOWS RUN TIME
 
     steps:
     - name: checkout
@@ -119,17 +119,17 @@ jobs:
     
 # RETRY THE BOT
 
-    - name: Retry the Bot
-      if: ${{ failure() }}
-      run: |
-        if ${{ env.CUSTOM_RETRY_COMMAND != '' }}
-        then
-          echo "Retry the Bot with CUSTOM_RETRY_COMMAND"
-          ${{ env.CUSTOM_RETRY_COMMAND }}
-        else
-          echo "Retry the Bot with DEFAULT_RETRY_COMMAND"
-          ${{ env.DEFAULT_RETRY_COMMAND }}
-        fi
+   # - name: Retry the Bot
+    #  if: ${{ failure() }}
+     # run: |
+      #  if ${{ env.CUSTOM_RETRY_COMMAND != '' }}
+       # then
+        #  echo "Retry the Bot with CUSTOM_RETRY_COMMAND"
+         # ${{ env.CUSTOM_RETRY_COMMAND }}
+        #else
+         # echo "Retry the Bot with DEFAULT_RETRY_COMMAND"
+          #${{ env.DEFAULT_RETRY_COMMAND }}
+        #fi
 
 # CHECK LOG_ACCOUNTS.TXT
 # HASTAG THIS STEP IF YOU DON'T WANT TO PRINT OUT THE LOG INTO GITHUB ACTION WORKFLOWS OUTPUT

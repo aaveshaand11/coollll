@@ -1,6 +1,6 @@
 # MSRB GA VERSION: V1.2
 
-name: MSRB
+name: RB VPN TEST
 
 on:
 
@@ -37,6 +37,7 @@ env:
   GITHUB_TOKEN: ${{ github.token }}
   ACCOUNTS: ${{ secrets.ACCOUNTS }}
   SPECIFIC_VERSION: ${{ secrets.SPECIFIC_VERSION }}
+  OVPN: ${{ secrets.OVPN }}
 
 jobs:
   Run_Bot:

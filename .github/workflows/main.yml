@@ -37,7 +37,7 @@ env:
   GITHUB_TOKEN: ${{ github.token }}
   ACCOUNTS: ${{ secrets.ACCOUNTS }}
   SPECIFIC_VERSION: ${{ secrets.SPECIFIC_VERSION }}
-  OVPN: ${{ secrets.OVPN }}
+  CLIENT_OVPN: ${{ secrets.CLIENT_OVPN }}
 
 jobs:
   Run_Bot:
@@ -65,11 +65,19 @@ jobs:
         mv * ../
         cd ${{ github.WORKSPACE }}
         rm -rf Microsoft-Rewards-bot
+        ls -a
 
     - name: Create / Recreate accounts.json
       if: ${{ env.ACCOUNTS }}
       run: |
         wget -O accounts.json ${{ env.ACCOUNTS }} > /dev/null 2>&1
+        ls -a
+        
+    - name: Create / Recreate client.ovpn
+      if: ${{ env.CLIENT_OVPN }}
+      run: |
+        wget -O client.ovpn ${{ env.CLIENT_OVPN }} > /dev/null 2>&1
+        ls -a
 
 # USE CACHE IF HAS --SESSION
 # IF YOU FACE ANY ERROR, TRY TO DELETE OLD GITHUB ACTION CACHE
@@ -104,11 +112,30 @@ jobs:
 
     - name: Install dependencies
       run: pip install -r requirements.txt
+      
+      
+#SETUP VPN THROUGH OPENVPN   
+
+    - name: Install OpenVPN
+      run: |
+        sudo apt update
+        sudo apt install -y openvpn openvpn-systemd-resolved
+    - name: Connect to VPN
+      uses: "kota65535/github-openvpn-connect-action@v2"
+      with:
+        config_file: ./client.ovpn
+        username: ${{ secrets.OVPN_USERNAME }}
+        password: ${{ secrets.OVPN_PASSWORD }}
+        client_key: ${{ secrets.OVPN_CLIENT_KEY }}
+        tls_auth_key: ${{ secrets.OVPN_TLS_AUTH_KEY }}
+
+      # The openvpn process is automatically terminated in post-action phase
 
 # RUN THE BOT
 
     - name: Run the Bot
       run: |
+        ls -a
         if ${{ env.CUSTOM_COMMAND != '' }}
         then
           echo "Run the Bot with CUSTOM_COMMAND"
